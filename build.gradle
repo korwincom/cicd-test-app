@@ -37,3 +37,8 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+//프로젝트 빌드 시 쓸데없는 plain JAR가 생성되어 도커 복사 단계를 교란하는 것을 막기 위해 설정 파일에 한 줄을 추가합니다.
+jar {
+    enabled = false
+}
