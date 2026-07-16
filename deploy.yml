@@ -11,19 +11,26 @@
         update: yes
         force: yes
 
-    # [★ 추가] gradlew 파일에 실행 권한(+x) 부여하기
+    # 2. gradlew 파일에 실행 권한(+x) 부여하기
     - name: Give execution permission to gradlew
       file:
         path: /home/wincomadmin/Project/cicd-test-app/gradlew
         mode: '+x'
 
-    # 2. 프로젝트 빌드하기
+    # 3. 프로젝트 빌드하기 (새로운 .jar 생성)
     - name: Build Spring Boot application with Gradle
       shell: ./gradlew clean build
       args:
         chdir: /home/wincomadmin/Project/cicd-test-app
 
-    # 3. 도커 이미지 빌드하기
+    # [★ 추가] 기존 도커 이미지를 먼저 완전히 삭제하여 캐시 강제 무력화
+    - name: Remove existing Docker Image to force rebuild
+      docker_image:
+        name: cicd-test-app
+        state: absent
+        force_absent: yes
+
+    # 4. 새롭게 도커 이미지 빌드하기 (기존 이미지가 없으므로 무조건 새로 빌드됨)
     - name: Build Docker Image
       docker_image:
         name: cicd-test-app
@@ -33,19 +40,19 @@
         source: build
         force_source: yes
 
-    # 4. 기존 1호기 컨테이너 삭제하기
+    # 5. 기존 1호기 컨테이너 삭제하기
     - name: Stop and remove existing instance 1
       docker_container:
         name: cicd-test-app-instance-1
         state: absent
 
-    # 5. 기존 2호기 컨테이너 삭제하기
+    # 6. 기존 2호기 컨테이너 삭제하기
     - name: Stop and remove existing instance 2
       docker_container:
         name: cicd-test-app-instance-2
         state: absent
 
-    # 6. 새 1호기 컨테이너 실행하기
+    # 7. 새 1호기 컨테이너 실행하기
     - name: Start instance 1
       docker_container:
         name: cicd-test-app-instance-1
@@ -54,7 +61,7 @@
         published_ports:
           - "8091:8080"
 
-    # 7. 새 2호기 컨테이너 실행하기
+    # 8. 새 2호기 컨테이너 실행하기
     - name: Start instance 2
       docker_container:
         name: cicd-test-app-instance-2
