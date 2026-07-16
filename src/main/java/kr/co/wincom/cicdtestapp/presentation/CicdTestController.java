@@ -22,7 +22,7 @@ public class CicdTestController {
     public ResponseEntity<String> hello () {
 
         // 결과 출력
-        return ResponseEntity.ok("Hello World!!222");
+        return ResponseEntity.ok("Hello World. 333");
     }
 
 }
