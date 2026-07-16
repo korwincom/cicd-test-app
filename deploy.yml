@@ -29,7 +29,6 @@
         name: cicd-test-app
         build:
           path: /home/wincomadmin/Project/cicd-test-app
-          nocache: yes
         source: build
 
     # 4. 기존 1호기 컨테이너 삭제하기
