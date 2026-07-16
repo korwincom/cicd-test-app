@@ -10,6 +10,12 @@
         dest: /home/wincomadmin/Project/cicd-test-app
         update: yes
 
+    # [★ 추가] gradlew 파일에 실행 권한(+x) 부여하기
+    - name: Give execution permission to gradlew
+      file:
+        path: /home/wincomadmin/Project/cicd-test-app/gradlew
+        mode: '+x'
+
     # 2. 프로젝트 빌드하기
     - name: Build Spring Boot application with Gradle
       shell: ./gradlew clean build
