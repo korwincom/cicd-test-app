@@ -9,6 +9,8 @@
         repo: 'https://github.com/korwincom/cicd-test-app.git'
         dest: /home/wincomadmin/Project/cicd-test-app
         update: yes
+        force: yes
+        clean: yes
 
     # [★ 추가] gradlew 파일에 실행 권한(+x) 부여하기
     - name: Give execution permission to gradlew
