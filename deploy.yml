@@ -3,34 +3,7 @@
   hosts: dev_server
   tasks:
 
-    # 1. GitHub 최신 소스 가져오기
-    - name: Pull latest code from GitHub
-      git:
-        repo: 'https://github.com/korwincom/cicd-test-app.git'
-        dest: /home/wincomadmin/Project/cicd-test-app
-        update: yes
-        force: yes
-
-    # 2. gradlew 파일에 실행 권한(+x) 부여하기
-    - name: Give execution permission to gradlew
-      file:
-        path: /home/wincomadmin/Project/cicd-test-app/gradlew
-        mode: '+x'
-
-    # 3. 프로젝트 빌드하기 (새로운 .jar 생성)
-    - name: Build Spring Boot application with Gradle
-      shell: ./gradlew clean build
-      args:
-        chdir: /home/wincomadmin/Project/cicd-test-app
-
-    # [★ 추가] 기존 도커 이미지를 먼저 완전히 삭제하여 캐시 강제 무력화
-    - name: Remove existing Docker Image to force rebuild
-      docker_image:
-        name: cicd-test-app
-        state: absent
-        force_absent: yes
-
-    # 4. 새롭게 도커 이미지 빌드하기 (기존 이미지가 없으므로 무조건 새로 빌드됨)
+    # 1. 젠킨스가 빌드해서 rsync로 보내준 최신 .jar 파일을 가지고 곧바로 도커 이미지 빌드 시작!
     - name: Build Docker Image
       docker_image:
         name: cicd-test-app
@@ -40,19 +13,19 @@
         source: build
         force_source: yes
 
-    # 5. 기존 1호기 컨테이너 삭제하기
+    # 2. 기존 1호기 컨테이너 삭제하기
     - name: Stop and remove existing instance 1
       docker_container:
         name: cicd-test-app-instance-1
         state: absent
 
-    # 6. 기존 2호기 컨테이너 삭제하기
+    # 3. 기존 2호기 컨테이너 삭제하기
     - name: Stop and remove existing instance 2
       docker_container:
         name: cicd-test-app-instance-2
         state: absent
 
-    # 7. 새 1호기 컨테이너 실행하기
+    # 4. 새 1호기 컨테이너 실행하기
     - name: Start instance 1
       docker_container:
         name: cicd-test-app-instance-1
@@ -61,7 +34,7 @@
         published_ports:
           - "8091:8080"
 
-    # 8. 새 2호기 컨테이너 실행하기
+    # 5. 새 2호기 컨테이너 실행하기
     - name: Start instance 2
       docker_container:
         name: cicd-test-app-instance-2
