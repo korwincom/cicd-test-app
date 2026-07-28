@@ -38,17 +38,15 @@ jobs:
       - name: Generate Docker Image Tag
         id: image_tag
         run: |
+          # 한국 시간(KST, UTC+9) 기준 날짜 및 시간 생성
           DATE_TIME=$(TZ=Asia/Seoul date +'%y%m%d.%H%M')
+          # Short Commit Hash
           HASH=$(git rev-parse --short HEAD)
+          # 브랜치명 (refs/heads/main -> main)
+          BRANCH=${GITHUB_REF_NAME}
           
-          # 💡 PR 이벤트일 경우 Target 브랜치(main)를 가져오고, 그 외엔 현재 브랜치명 사용
-          BRANCH="${{ github.base_ref || github.ref_name }}"
-          
-          # 만약 브랜치명에 슬래시(/)가 포함되어 있다면 대시(-)로 안전하게 변환
-          SAFE_BRANCH=$(echo "${BRANCH}" | tr '/' '-')
-          
-          # 최종 태그 조합 (예: v260728.1047-c6c8053-main)
-          TAG_NAME="v${DATE_TIME}-${HASH}-${SAFE_BRANCH}"
+          # 최종 태그 조합 (예: v260727.0909-94fef09-main)
+          TAG_NAME="v${DATE_TIME}-${HASH}-${BRANCH}"
           
           echo "IMAGE_TAG=${TAG_NAME}" >> $GITHUB_OUTPUT
           echo "Generated Tag: ${TAG_NAME}"
