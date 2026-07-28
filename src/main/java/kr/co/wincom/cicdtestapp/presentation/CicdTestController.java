@@ -22,8 +22,8 @@ public class CicdTestController {
     public ResponseEntity<String> hello () {
 
         // 결과 출력
-        log.info("Hello World. Ansible & Jenkins 연동 CI/CD 성공!!");
-        return ResponseEntity.ok("Hello World. Ansible & Jenkins 연동 CI/CD 성공!!");
+        log.info("Hello World. Git action & ArgoCd 연동 CI/CD 성공!!");
+        return ResponseEntity.ok("Hello World. Git action & ArgoCd 연동 CI/CD 성공!!");
     }
 
 }
