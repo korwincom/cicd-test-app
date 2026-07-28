@@ -1,9 +1,9 @@
 name: CI/CD Build and Push
 
 on:
-  push:
-    branches: [ "main" ] # 필요에 따라 원하는 브랜치 추가 가능
-
+  pull_request:
+    branches: [ "main" ]
+    types: [ opened, synchronize, reopened ] # PR 생성, 코드 추가 푸시, 다시 열림 시 작동
 env:
   APP_NAME: cicd-test-app
   DOCKER_IMAGE: legend03/cicd-test-app
