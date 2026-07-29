@@ -22,8 +22,8 @@ public class CicdTestController {
     public ResponseEntity<String> hello () {
 
         // 결과 출력
-        log.info("Hello World. Git action & ArgoCd & k8s 연동 CI/CD 성공!!");
-        return ResponseEntity.ok("Hello World. Git action & ArgoCd & k8s 연동 CI/CD 성공!!");
+        log.info("hello world : cicd-test-app1");
+        return ResponseEntity.ok("hello world : cicd-test-app1");
     }
 
 }
