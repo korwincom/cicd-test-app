@@ -62,6 +62,14 @@ jobs:
             ${{ env.DOCKER_IMAGE }}:${{ steps.image_tag.outputs.IMAGE_TAG }}
             ${{ env.DOCKER_IMAGE }}:latest
 
+      - name: Create and Push Git Tag
+        run: |
+          TAG_NAME="${{ steps.image_tag.outputs.IMAGE_TAG }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag ${TAG_NAME}
+          git push origin ${TAG_NAME}            
+
       # ------------------------------------------------------------------
       # 🔥 [수정] External Repository (korwincom/k8s-manifests) 업데이트
       # ------------------------------------------------------------------
